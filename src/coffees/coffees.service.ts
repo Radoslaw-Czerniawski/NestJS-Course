@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { Coffee } from './entities/coffee.entity';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Injectable()
 export class CoffeesService {
@@ -16,8 +17,13 @@ export class CoffeesService {
         @InjectModel(Coffee.name) private readonly coffeeModel: Model<Coffee>,
     ) {}
 
-    findAll() {
-        return this.coffeeModel.find().exec();
+    findAll(paginationQuery: PaginationQueryDto) {
+        const { limit, offset } = paginationQuery;
+        return this.coffeeModel
+            .find()
+            .skip(offset)
+            .limit(limit)
+            .exec();
     }
 
     async findOne(id: string) {
@@ -43,15 +49,15 @@ export class CoffeesService {
             )
             .exec();
 
-        if(!existingCoffee) {
-            throw new NotFoundException(`Coffee #${id} not found`)
+        if (!existingCoffee) {
+            throw new NotFoundException(`Coffee #${id} not found`);
         }
 
-        return existingCoffee
+        return existingCoffee;
     }
 
     async remove(id: string) {
-        const coffee = await this.findOne(id)
+        const coffee = await this.findOne(id);
         return coffee.remove();
     }
 }
