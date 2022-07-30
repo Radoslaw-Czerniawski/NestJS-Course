@@ -4,10 +4,13 @@ import { CoffeesService } from './coffees.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Coffee, CoffeeSchema } from './entities/coffee.entity';
 import { EventSchema } from 'src/events/entities/event.entity';
+import { COFFEE_BRANDS } from './coffees.constants';
+
+// class MockCoffeesService {}
 
 @Module({
     imports: [
-        MongooseModule.forFeature([
+    MongooseModule.forFeature([
             {
                 name: Coffee.name,
                 schema: CoffeeSchema,
@@ -19,7 +22,11 @@ import { EventSchema } from 'src/events/entities/event.entity';
         ]),
     ],
     controllers: [CoffeesController],
-    providers: [CoffeesService],
+    providers: [
+        CoffeesService,
+        // { provide: CoffeesService, useValue: new MockCoffeesService() },
+        {provide: COFFEE_BRANDS, useValue: ['buddy brew', 'nescafe']}
+    ],
     exports: [CoffeesService],
 })
 export class CoffeesModule {}
