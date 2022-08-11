@@ -21,6 +21,13 @@ export class CoffeesController {
     findAll(@Query() paginationQuery: PaginationQueryDto) {
         return this.coffeesService.findAll(paginationQuery);
     }
+
+    // @Get()
+    // findAll(@Query() paginationQuery) {
+    //     const { limit, offset } = paginationQuery;
+    //     return this.coffeesService.findAll(limit, offset);
+    // }
+
     // @Get()
     // findAll(@Res() response) {
     //     response.status(202).send('This action returns all coffees');
@@ -47,7 +54,7 @@ export class CoffeesController {
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-        return this.coffeesService.update(id, updateCoffeeDto );
+        return this.coffeesService.update(id, updateCoffeeDto);
     }
 
     @Delete(':id')
